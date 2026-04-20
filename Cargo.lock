@@ -931,6 +931,7 @@ dependencies = [
  "evdev",
  "libcosmic",
  "sha2",
+ "tempfile",
  "tokio",
  "tracing",
  "tracing-log",

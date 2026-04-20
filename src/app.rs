@@ -139,7 +139,11 @@ impl cosmic::Application for BongoPenguin {
             }
             Message::TabActivated(entity) => self.tabs.activate(entity),
             Message::SkinSelected(i) => {
-                tracing::info!(index = i, name = SKINS.get(i).copied().unwrap_or(""), "skin selected");
+                tracing::info!(
+                    index = i,
+                    name = SKINS.get(i).copied().unwrap_or(""),
+                    "skin selected"
+                );
                 self.selected_skin = i;
             }
             Message::OpenUrl(url) => {
@@ -329,22 +333,19 @@ impl BongoPenguin {
         for (threshold, label) in ACHIEVEMENTS {
             let unlocked = self.count >= *threshold;
             let marker = if unlocked { "✓" } else { "·" };
-            col = col.push(
-                text(format!("{marker}  {label} ({threshold})"))
-                    .size(13),
-            );
+            col = col.push(text(format!("{marker}  {label} ({threshold})")).size(13));
         }
         col.into()
     }
 
     fn view_about(&self) -> Element<'_, Message> {
-        let github = button::link("GitHub repository")
-            .on_press(Message::OpenUrl(GITHUB_URL));
-        let discord = button::link("Join the Discord")
-            .on_press(Message::OpenUrl(DISCORD_URL));
+        let github = button::link("GitHub repository").on_press(Message::OpenUrl(GITHUB_URL));
+        let discord = button::link("Join the Discord").on_press(Message::OpenUrl(DISCORD_URL));
         column::with_children(vec![
             text("Bongo Penguin").size(14).into(),
-            text(concat!("Version ", env!("CARGO_PKG_VERSION"))).size(11).into(),
+            text(concat!("Version ", env!("CARGO_PKG_VERSION")))
+                .size(11)
+                .into(),
             github.into(),
             discord.into(),
         ])
