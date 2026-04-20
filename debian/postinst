@@ -1,0 +1,61 @@
+#!/bin/sh
+# postinst script for cosmic-applet-bongo-penguin
+set -e
+
+case "$1" in
+    configure)
+        # Add the installing user to the `input` group so they can read
+        # from /dev/input/event*. $SUDO_USER is set when the package is
+        # installed via `sudo apt install` / `sudo dpkg -i`.
+        TARGET_USER=""
+        if [ -n "${SUDO_USER:-}" ] && [ "${SUDO_USER}" != "root" ]; then
+            TARGET_USER="$SUDO_USER"
+        elif [ -n "${PKEXEC_UID:-}" ]; then
+            TARGET_USER="$(getent passwd "$PKEXEC_UID" | cut -d: -f1)"
+        fi
+
+        if [ -n "$TARGET_USER" ]; then
+            if ! id -nG "$TARGET_USER" 2>/dev/null | tr ' ' '\n' | grep -qx input; then
+                usermod -aG input "$TARGET_USER" || true
+                cat <<EOF
+
+==============================================================
+ Bongo Penguin: added '$TARGET_USER' to the 'input' group.
+
+ Please log out and log back in for the change to take effect,
+ otherwise the applet will not see keyboard/mouse events.
+
+ To start using it right away:
+   1. Log out and log back in.
+   2. Run:  pkill -x cosmic-panel
+   3. Add "Bongo Penguin" from COSMIC Settings → Panel / Dock.
+==============================================================
+
+EOF
+            fi
+        else
+            cat <<EOF
+
+ Bongo Penguin installed. You must be a member of the 'input'
+ group to read from /dev/input/event*. Add yourself with:
+
+   sudo usermod -aG input "\$USER"
+
+ Then log out and log back in.
+
+EOF
+        fi
+        ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+        ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0

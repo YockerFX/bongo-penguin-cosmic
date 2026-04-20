@@ -1,0 +1,35 @@
+Source: cosmic-applet-bongo-penguin
+Section: x11
+Priority: optional
+Maintainer: YockerFX <104serious@gmail.com>
+Build-Depends: debhelper-compat (= 13),
+               cargo,
+               rustc (>= 1.80),
+               pkg-config,
+               libxkbcommon-dev,
+               libudev-dev,
+               libinput-dev,
+               libssl-dev,
+               libfontconfig1-dev,
+               libwayland-dev
+Standards-Version: 4.6.2
+Homepage: https://github.com/YockerFX/bongo-penguin-cosmic
+Vcs-Browser: https://github.com/YockerFX/bongo-penguin-cosmic
+Vcs-Git: https://github.com/YockerFX/bongo-penguin-cosmic.git
+Rules-Requires-Root: no
+
+Package: cosmic-applet-bongo-penguin
+Architecture: any
+Depends: ${misc:Depends},
+         ${shlibs:Depends}
+Recommends: cosmic-panel
+Description: Bongo Penguin applet for the COSMIC desktop
+ A Bongo-Cat-style applet for the COSMIC desktop environment (Pop!_OS),
+ starring Tux the Linux penguin. The penguin sits in the COSMIC panel or
+ dock and drums its flippers in response to every keystroke and mouse
+ click — system-wide, including games under Proton, exclusive fullscreen,
+ and native Wayland applications.
+ .
+ Includes a live keystroke counter that survives reboots, encrypted with
+ AES-256-GCM and bound to the machine's /etc/machine-id so counts can't
+ be trivially copied between installations.

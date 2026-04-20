@@ -1,0 +1,2 @@
+target/release/cosmic-applet-bongo-penguin usr/bin
+data/com.github.bongopenguin.CosmicAppletBongoPenguin.desktop usr/share/applications

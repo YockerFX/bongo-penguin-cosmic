@@ -1,0 +1,13 @@
+/target
+Cargo.lock.bak
+*.swp
+.direnv/
+
+# debian build artifacts (dpkg-buildpackage drops products in ../)
+debian/.debhelper/
+debian/cosmic-applet-bongo-penguin/
+debian/files
+debian/debhelper-build-stamp
+debian/*.substvars
+debian/*.debhelper.log
+/.cargo-home/

@@ -1,0 +1,14 @@
+cosmic-applet-bongo-penguin (0.1.0-1) unstable; urgency=medium
+
+  * Initial public release.
+    - COSMIC applet: works in both panel and dock.
+    - System-wide keyboard & mouse capture via evdev (one tokio task per
+      device, epoll-backed — no polling, no battery drain).
+    - Live keystroke counter with AES-256-GCM encrypted persistence
+      bound to /etc/machine-id; atomic writes safe against the two
+      parallel dock instances COSMIC spawns per output.
+    - Four-pose SVG animation: idle / left flipper / right flipper /
+      both flippers, with 120 ms decay back to idle.
+    - Popup with Cosmetics / Achievements / About tabs.
+
+ -- YockerFX <104serious@gmail.com>  Mon, 20 Apr 2026 00:00:00 +0000
