@@ -34,3 +34,26 @@ sha2 = "0.10"
 lto = "thin"
 codegen-units = 1
 strip = true
+
+[package.metadata.deb]
+maintainer = "YockerFX <104serious@gmail.com>"
+copyright = "2026 YockerFX"
+extended-description = """\
+A Bongo-Cat-style applet for the COSMIC desktop environment (Pop!_OS), \
+starring Tux the Linux penguin. The penguin sits in the COSMIC panel or \
+dock and drums its flippers in response to every keystroke and mouse \
+click — system-wide, including games under Proton, exclusive fullscreen, \
+and native Wayland applications.
+
+Includes a live keystroke counter that survives reboots, encrypted with \
+AES-256-GCM and bound to the machine's /etc/machine-id so counts can't \
+be trivially copied between installations."""
+section = "x11"
+priority = "optional"
+depends = "$auto"
+recommends = "cosmic-panel"
+assets = [
+    ["target/release/cosmic-applet-bongo-penguin", "usr/bin/", "755"],
+    ["data/com.github.bongopenguin.CosmicAppletBongoPenguin.desktop", "usr/share/applications/", "644"],
+]
+maintainer-scripts = "debian/"
