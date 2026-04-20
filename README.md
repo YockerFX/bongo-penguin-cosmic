@@ -22,7 +22,7 @@ stored count can't be trivially tampered with or copied to another machine.
 ## Table of contents
 
 - [Progress & features](#progress--features)
-- [Next steps](#next-steps)
+- [Roadmap](#roadmap)
 - [Installation / setup](#installation--setup)
 - [How it works](#how-it-works)
 - [Contributing](#contributing)
@@ -39,7 +39,7 @@ stored count can't be trivially tampered with or copied to another machine.
 | 4. Hotplug                 | ⏳ planned     | Re-scan on BT keyboard reconnect after suspend          |
 | 5. Settings popup          | 🚧 partial     | Tabs exist; decay slider + counter-reset button pending |
 | 6. Debian packaging        | ✅ ready       | `debian/` rules present; CI-built `.deb` pending        |
-| 7. Polish / v0.1.0 release | ⏳ planned     | Screenshots, AppStream metadata, GitHub Actions         |
+| 7. Polish / v0.1.0 release | 🚧 partial     | CI runs fmt/clippy/test/build; screenshots + AppStream pending |
 
 Shipped features:
 
@@ -57,18 +57,51 @@ Shipped features:
 - **Race-safe persistence** — atomic `tmp.<pid>` + `rename` handles the two
   dock instances COSMIC spawns.
 - **Dual-sink logging** — `stderr` _and_ `~/.cache/bongo-penguin.log`.
+- **CI on every PR** — GitHub Actions runs `rustfmt`, `clippy -D warnings`,
+  the unit-test suite, and a release build before anything gets merged.
 
-## Next steps
+## Roadmap
 
-- **Hotplug** (phase 4): udev monitor so Bluetooth keyboards are picked up
-  after suspend without restarting the applet.
-- **Settings popup** (phase 5): decay slider, counter-reset button,
-  `cosmic-config` integration.
-- **Skin switching**: wire the Cosmetics tab to actually swap SVGs.
-- **CI `.deb`** via GitHub Actions, published to Releases.
-- **Unit tests** for `persistence::{load, save}` and `classify::Side`.
+Contributors welcome — here is what is still open. Pick an item, open an
+issue, or send a PR.
 
-See [`PLAN.md`](./PLAN.md) for the detailed plan.
+### Features
+
+- [ ] **Hotplug** (phase 4) — udev monitor so Bluetooth keyboards and other
+      hot-plugged input devices get picked up after suspend / reconnect
+      without restarting the applet.
+- [ ] **Settings popup** (phase 5) — decay-duration slider, counter-reset
+      button, per-device enable/disable, `cosmic-config` integration so
+      settings persist across sessions.
+- [ ] **Skin switching** — the `Cosmetics` tab already exists and lets you
+      pick `Classic` / `Cosmic` / `Retro`, but the selection is a no-op.
+      Wire it up to actually swap the rendered SVGs at runtime.
+- [ ] **Counter display toggle** — option to hide the number and only show
+      the penguin.
+- [ ] **More achievement tiers** + nicer unlock UI (currently a static list
+      at 100 / 1 000 / 10 000 / 100 000 keystrokes).
+
+### Art / cosmetics
+
+- [ ] **Pingu redesign** — the current poses in `assets/` (`none.svg`,
+      `left.svg`, `right.svg`, `both.svg`) are placeholders. Polished,
+      on-brand Tux artwork very welcome.
+- [ ] **"Cosmic" skin** — space / nebula-themed variant of the four poses
+      (idle, left flipper, right flipper, both flippers).
+- [ ] **"Retro" skin** — pixel-art / CRT-themed variant of the four poses.
+- [ ] **Community skins** — see [Contributing](#contributing) for the
+      target size and style guidance. Extra skin packs are a nice way to
+      contribute without touching Rust.
+
+### Packaging & release
+
+- [ ] **CI-built `.deb`** — extend the GitHub Actions workflow to produce a
+      `.deb` on every tag and upload it to GitHub Releases.
+- [ ] **AppStream metadata** for eventual COSMIC Store inclusion.
+- [ ] **Screenshots** in the README (panel + dock, all four poses).
+- [ ] **Discord invite** — the `About` tab currently links to a
+      placeholder; swap in the real invite before v0.1.0.
+- [ ] **v0.1.0 tag** once the above lands.
 
 ## Installation / setup
 
@@ -174,7 +207,11 @@ Before opening a PR:
 just fmt       # cargo fmt --all
 just clippy    # cargo clippy --all-targets -- -D warnings
 just check     # cargo check --all-targets
+cargo test     # run the unit test suite
 ```
+
+CI runs the same checks on every push and PR — see
+[`.github/workflows/ci.yml`](./.github/workflows/ci.yml).
 
 Dev loop: edit → `just build-release` → `just install` (or copy into
 `~/.local/bin/`) → `pkill -x cosmic-panel` → `tail -f ~/.cache/bongo-penguin.log`.
