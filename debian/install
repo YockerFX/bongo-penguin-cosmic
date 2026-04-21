@@ -1,2 +1,4 @@
 target/release/cosmic-applet-bongo-penguin usr/bin
-data/com.github.bongopenguin.CosmicAppletBongoPenguin.desktop usr/share/applications
+data/io.github.yockerfx.CosmicAppletBongoPenguin.desktop usr/share/applications
+data/io.github.yockerfx.CosmicAppletBongoPenguin.metainfo.xml usr/share/metainfo
+data/icons/hicolor/scalable/apps/io.github.yockerfx.CosmicAppletBongoPenguin.svg usr/share/icons/hicolor/scalable/apps

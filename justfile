@@ -1,9 +1,10 @@
 name := "cosmic-applet-bongo-penguin"
-app-id := "com.github.bongopenguin.CosmicAppletBongoPenguin"
+app-id := "io.github.yockerfx.CosmicAppletBongoPenguin"
 prefix := "/usr"
 bindir := prefix / "bin"
 sharedir := prefix / "share"
 appdir := sharedir / "applications"
+metainfodir := sharedir / "metainfo"
 iconsdir := sharedir / "icons/hicolor"
 
 default: build-release
@@ -29,10 +30,14 @@ run: build-debug
 install: build-release
     install -Dm0755 target/release/{{name}} {{bindir}}/{{name}}
     install -Dm0644 data/{{app-id}}.desktop {{appdir}}/{{app-id}}.desktop
+    install -Dm0644 data/{{app-id}}.metainfo.xml {{metainfodir}}/{{app-id}}.metainfo.xml
+    install -Dm0644 data/icons/hicolor/scalable/apps/{{app-id}}.svg {{iconsdir}}/scalable/apps/{{app-id}}.svg
 
 uninstall:
     rm -f {{bindir}}/{{name}}
     rm -f {{appdir}}/{{app-id}}.desktop
+    rm -f {{metainfodir}}/{{app-id}}.metainfo.xml
+    rm -f {{iconsdir}}/scalable/apps/{{app-id}}.svg
 
 deb:
     dpkg-buildpackage -us -uc -b

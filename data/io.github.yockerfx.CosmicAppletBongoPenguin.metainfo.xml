@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.yockerfx.CosmicAppletBongoPenguin</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-only</project_license>
+  <name>Bongo Penguin</name>
+  <summary>Tux drums along with every keystroke</summary>
+
+  <description>
+    <p>
+      Bongo Penguin is a Bongo-Cat-style applet for the COSMIC desktop,
+      starring Tux the Linux penguin. It lives in the panel or dock and
+      flips its flippers in time with your keyboard and mouse — system-wide,
+      including Wayland apps, native Linux games, and titles running under
+      Proton or Wine.
+    </p>
+    <p>Features:</p>
+    <ul>
+      <li>Panel and dock applet, horizontal and vertical layouts</li>
+      <li>Four penguin poses (idle, left, right, both flippers)</li>
+      <li>System-wide input capture via evdev — no focus grab required</li>
+      <li>Encrypted keystroke counter (AES-256-GCM) that survives reboots</li>
+      <li>Battery-friendly: epoll event streams, zero polling, minimal disk I/O</li>
+    </ul>
+    <p>
+      Requires: your user must be in the "input" group to read from
+      /dev/input/event*. After installing, run once in a terminal:
+    </p>
+    <p>sudo usermod -aG input $USER</p>
+    <p>
+      Then log out and log back in. The applet will show an in-app reminder
+      with this command if it starts without the required permission.
+    </p>
+  </description>
+
+  <launchable type="desktop-id">io.github.yockerfx.CosmicAppletBongoPenguin.desktop</launchable>
+
+  <url type="homepage">https://github.com/YockerFX/bongo-penguin-cosmic</url>
+  <url type="bugtracker">https://github.com/YockerFX/bongo-penguin-cosmic/issues</url>
+  <url type="vcs-browser">https://github.com/YockerFX/bongo-penguin-cosmic</url>
+
+  <developer id="io.github.yockerfx">
+    <name>YockerFX</name>
+  </developer>
+
+  <categories>
+    <category>Utility</category>
+  </categories>
+
+  <keywords>
+    <keyword>COSMIC</keyword>
+    <keyword>applet</keyword>
+    <keyword>penguin</keyword>
+    <keyword>tux</keyword>
+    <keyword>bongo</keyword>
+  </keywords>
+
+  <supports>
+    <control>keyboard</control>
+    <control>pointing</control>
+  </supports>
+
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/YockerFX/bongo-penguin-cosmic/main/assets/show.png</image>
+      <caption>Bongo Penguin sitting in the COSMIC panel</caption>
+    </screenshot>
+  </screenshots>
+
+  <content_rating type="oars-1.1"/>
+
+  <releases>
+    <release version="0.1.0" date="2026-04-21">
+      <description>
+        <p>Initial release.</p>
+      </description>
+    </release>
+  </releases>
+
+  <branding>
+    <color type="primary" scheme_preference="light">#e6e6e6</color>
+    <color type="primary" scheme_preference="dark">#1a1a1a</color>
+  </branding>
+</component>

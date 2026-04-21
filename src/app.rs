@@ -9,7 +9,7 @@ use cosmic::widget::{button, column, row, segmented_button, tab_bar, text};
 use crate::input::{self, InputEvent, Side};
 use crate::persistence;
 
-pub const APP_ID: &str = "com.github.bongopenguin.CosmicAppletBongoPenguin";
+pub const APP_ID: &str = "io.github.yockerfx.CosmicAppletBongoPenguin";
 const SAVE_INTERVAL: Duration = Duration::from_secs(5);
 const ANIM_TICK: Duration = Duration::from_millis(50);
 const DECAY: Duration = Duration::from_millis(120);

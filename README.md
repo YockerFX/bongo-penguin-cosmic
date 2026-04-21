@@ -24,6 +24,7 @@ stored count can't be trivially tampered with or copied to another machine.
 - [Progress & features](#progress--features)
 - [Roadmap](#roadmap)
 - [Installation / setup](#installation--setup)
+- [Publishing to the COSMIC Store](#publishing-to-the-cosmic-store)
 - [How it works](#how-it-works)
 - [Contributing](#contributing)
 - [Runtime dependencies](#runtime-dependencies)
@@ -97,18 +98,45 @@ issue, or send a PR.
 
 - [ ] **CI-built `.deb`** — extend the GitHub Actions workflow to produce a
       `.deb` on every tag and upload it to GitHub Releases.
-- [ ] **AppStream metadata** for eventual COSMIC Store inclusion.
+- [x] **AppStream metadata** for COSMIC Store inclusion (`data/*.metainfo.xml`).
+- [x] **Flatpak manifest** (`flatpak/` — drop-in for a PR against `pop-os/cosmic-flatpak`).
+- [x] **Launcher icon** (`data/icons/hicolor/scalable/apps/*.svg`).
+- [ ] **Regenerate `flatpak/cargo-sources.json`** from `Cargo.lock` before PR.
 - [ ] **Screenshots** in the README (panel + dock, all four poses).
 - [ ] **Discord invite** — the `About` tab currently links to a
       placeholder; swap in the real invite before v0.1.0.
 - [ ] **v0.1.0 tag** once the above lands.
+- [ ] **Open PR against `pop-os/cosmic-flatpak`** to publish to the
+      COSMIC Store — see [`flatpak/README.md`](./flatpak/README.md).
 
 ## Installation / setup
 
 Requires **COSMIC desktop** (Pop!_OS 24.04 alpha+) and membership in the
 `input` group.
 
-### From a `.deb` (easiest)
+> **Missing `input` group?** The applet detects this at launch and shows an
+> in-popup banner with the exact `usermod` command. After fixing, log out
+> and log back in — the banner disappears automatically.
+
+### From the COSMIC Store (once published)
+
+```sh
+# Add the Pop!_OS COSMIC remote once:
+flatpak remote-add --if-not-exists --user cosmic \
+    https://apt.pop-os.org/cosmic/cosmic.flatpakrepo
+
+# Then install via the COSMIC Store GUI, or:
+flatpak install --user cosmic io.github.yockerfx.CosmicAppletBongoPenguin
+```
+
+After install, run once on the host (Flatpak can't grant kernel groups):
+
+```sh
+sudo usermod -aG input "$USER"
+# log out and log back in
+```
+
+### From a `.deb` (easiest on Pop!_OS before Store publication)
 
 ```sh
 # Prebuilt (once published to Releases):
@@ -136,7 +164,7 @@ just install                        # system-wide, needs sudo
 # or dev install into ~/.local:
 cargo build --release
 install -Dm0755 target/release/cosmic-applet-bongo-penguin ~/.local/bin/
-install -Dm0644 data/com.github.bongopenguin.CosmicAppletBongoPenguin.desktop \
+install -Dm0644 data/io.github.yockerfx.CosmicAppletBongoPenguin.desktop \
     ~/.local/share/applications/
 
 sudo usermod -aG input "$USER"      # manual installs only
@@ -151,6 +179,35 @@ pkill -x cosmic-panel   # cosmic-session respawns it in ~10 s
 
 Then go to **COSMIC Settings → Panel / Dock → Applets** and add
 **Bongo Penguin**.
+
+## Publishing to the COSMIC Store
+
+The applet ships with all metadata needed for the official COSMIC Store
+(AppStream metainfo, icon, `.desktop`, Flatpak manifest under `flatpak/`).
+Full submission checklist lives in [`flatpak/README.md`](./flatpak/README.md).
+
+TL;DR for a new release:
+
+1. Bump `version` in `Cargo.toml` and add a `<release>` entry to
+   `data/io.github.yockerfx.CosmicAppletBongoPenguin.metainfo.xml`.
+2. `appstreamcli validate data/*.metainfo.xml` and
+   `desktop-file-validate data/*.desktop` — must be clean (the
+   `screenshot-image-not-found` warning resolves once the tag is pushed).
+3. Tag + push (`git tag v0.1.0 && git push --tags`).
+4. Regenerate `flatpak/cargo-sources.json` from the current `Cargo.lock`:
+   ```sh
+   pip install --user aiohttp toml
+   curl -fLO https://raw.githubusercontent.com/flatpak/flatpak-builder-tools/master/cargo/flatpak-cargo-generator.py
+   python3 flatpak-cargo-generator.py -o flatpak/cargo-sources.json Cargo.lock
+   ```
+5. In `flatpak/io.github.yockerfx.CosmicAppletBongoPenguin.json`, replace
+   `REPLACE_WITH_RELEASE_COMMIT_SHA` with the tag's commit SHA.
+6. Fork [`pop-os/cosmic-flatpak`](https://github.com/pop-os/cosmic-flatpak),
+   copy both files into
+   `app/io.github.yockerfx.CosmicAppletBongoPenguin/`, and open a PR.
+
+System76 reviews the manifest, the CI builds it, and on merge the applet
+shows up in the COSMIC Store under "COSMIC Applets".
 
 ## How it works
 

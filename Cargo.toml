@@ -57,6 +57,8 @@ depends = "$auto"
 recommends = "cosmic-panel"
 assets = [
     ["target/release/cosmic-applet-bongo-penguin", "usr/bin/", "755"],
-    ["data/com.github.bongopenguin.CosmicAppletBongoPenguin.desktop", "usr/share/applications/", "644"],
+    ["data/io.github.yockerfx.CosmicAppletBongoPenguin.desktop", "usr/share/applications/", "644"],
+    ["data/io.github.yockerfx.CosmicAppletBongoPenguin.metainfo.xml", "usr/share/metainfo/", "644"],
+    ["data/icons/hicolor/scalable/apps/io.github.yockerfx.CosmicAppletBongoPenguin.svg", "usr/share/icons/hicolor/scalable/apps/", "644"],
 ]
 maintainer-scripts = "debian/"
