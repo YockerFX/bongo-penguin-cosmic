@@ -103,8 +103,6 @@ issue, or send a PR.
 - [x] **Launcher icon** (`data/icons/hicolor/scalable/apps/*.svg`).
 - [ ] **Regenerate `flatpak/cargo-sources.json`** from `Cargo.lock` before PR.
 - [ ] **Screenshots** in the README (panel + dock, all four poses).
-- [ ] **Discord invite** — the `About` tab currently links to a
-      placeholder; swap in the real invite before v0.1.0.
 - [ ] **v0.1.0 tag** once the above lands.
 - [ ] **Open PR against `pop-os/cosmic-flatpak`** to publish to the
       COSMIC Store — see [`flatpak/README.md`](./flatpak/README.md).

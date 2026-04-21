@@ -27,8 +27,6 @@ const ACHIEVEMENTS: &[(u64, &str)] = &[
     (100_000, "Bongo master"),
 ];
 const GITHUB_URL: &str = "https://github.com/YockerFX/bongo-penguin-cosmic";
-// TODO: replace with real invite
-const DISCORD_URL: &str = "https://discord.gg/your-invite";
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum AnimState {
@@ -379,14 +377,12 @@ impl BongoPenguin {
 
     fn view_about(&self) -> Element<'_, Message> {
         let github = button::link("GitHub repository").on_press(Message::OpenUrl(GITHUB_URL));
-        let discord = button::link("Join the Discord").on_press(Message::OpenUrl(DISCORD_URL));
         column::with_children(vec![
             text("Bongo Penguin").size(14).into(),
             text(concat!("Version ", env!("CARGO_PKG_VERSION")))
                 .size(11)
                 .into(),
             github.into(),
-            discord.into(),
         ])
         .spacing(8)
         .into()
