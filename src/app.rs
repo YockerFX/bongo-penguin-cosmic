@@ -56,6 +56,7 @@ pub struct BongoPenguin {
     popup: Option<Id>,
     tabs: segmented_button::SingleSelectModel,
     selected_skin: usize,
+    input_ok: bool,
 }
 
 #[derive(Clone, Debug)]
@@ -91,6 +92,12 @@ impl cosmic::Application for BongoPenguin {
             0
         });
         tracing::info!(count, "loaded persisted count");
+        let input_ok = input::has_input_permission();
+        if !input_ok {
+            tracing::warn!(
+                "cannot read from /dev/input/event* — user likely not in `input` group"
+            );
+        }
         let tabs = segmented_button::Model::builder()
             .insert(|b| b.text("Cosmetics").data(Tab::Cosmetics).activate())
             .insert(|b| b.text("Achievements").data(Tab::Achievements))
@@ -108,6 +115,7 @@ impl cosmic::Application for BongoPenguin {
                 popup: None,
                 tabs,
                 selected_skin: 0,
+                input_ok,
             },
             app::Task::none(),
         )
@@ -302,10 +310,41 @@ impl BongoPenguin {
             Some(Tab::About) | None => self.view_about(),
         };
 
-        column::with_children(vec![tabs.into(), body])
+        let mut children: Vec<Element<'_, Message>> = Vec::with_capacity(3);
+        if !self.input_ok {
+            children.push(self.view_input_permission_banner());
+        }
+        children.push(tabs.into());
+        children.push(body);
+
+        column::with_children(children)
             .spacing(12)
             .padding(12)
             .into()
+    }
+
+    fn view_input_permission_banner(&self) -> Element<'_, Message> {
+        let title = text("⚠  Can't read keyboard/mouse events yet").size(13);
+        let body = text(
+            "Your user needs to be in the \"input\" group. \
+             Open a terminal and run:",
+        )
+        .size(12);
+        let cmd = text("sudo usermod -aG input $USER").size(12);
+        let hint = text("Then log out and log back in.").size(12);
+        let help =
+            button::link("Read the full instructions on GitHub").on_press(Message::OpenUrl(GITHUB_URL));
+
+        column::with_children(vec![
+            title.into(),
+            body.into(),
+            cmd.into(),
+            hint.into(),
+            help.into(),
+        ])
+        .spacing(4)
+        .padding(8)
+        .into()
     }
 
     fn view_cosmetics(&self) -> Element<'_, Message> {

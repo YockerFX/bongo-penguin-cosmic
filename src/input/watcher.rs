@@ -67,6 +67,19 @@ fn enumerate_event_paths() -> Vec<PathBuf> {
     out
 }
 
+/// Returns `true` if the process can actually read from `/dev/input/event*`.
+///
+/// Called once at applet startup so the popup can surface a fix-it banner
+/// when the user is not in the `input` group (or `/dev/input` isn't mapped
+/// into the Flatpak sandbox).
+pub fn has_input_permission() -> bool {
+    let paths = enumerate_event_paths();
+    if paths.is_empty() {
+        return false;
+    }
+    paths.iter().any(|p| Device::open(p).is_ok())
+}
+
 async fn read_device(
     dev: Device,
     kind: DeviceKind,
