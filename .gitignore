@@ -1,13 +1,62 @@
+# Rust / Cargo
 /target
+/.cargo-home/
 Cargo.lock.bak
-*.swp
-.direnv/
+*.rs.bk
+*.orig
+*.rej
 
-# debian build artifacts (dpkg-buildpackage drops products in ../)
+# Debian build artifacts (dpkg-buildpackage drops products in ../)
 debian/.debhelper/
 debian/cosmic-applet-bongo-penguin/
 debian/files
 debian/debhelper-build-stamp
 debian/*.substvars
 debian/*.debhelper.log
-/.cargo-home/
+
+# Flatpak local builds (see flatpak/README.md)
+.flatpak-builder/
+/build/
+/repo/
+/log/
+/flatpak-cargo-generator.py
+__pycache__/
+*.pyc
+
+# Profiling / coverage
+perf.data*
+flamegraph.svg
+*.profraw
+*.profdata
+lcov.info
+/coverage/
+
+# Editor / IDE
+.vscode/
+.idea/
+.fleet/
+.zed/
+.nvim/
+.direnv/
+*.iml
+*.swp
+*.swo
+*.swn
+tags
+TAGS
+
+# OS
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
+
+# Secrets
+.env
+.env.local
+.cargo/credentials
+.cargo/credentials.toml
+
+# Misc
+*.bak
+*.tmp
