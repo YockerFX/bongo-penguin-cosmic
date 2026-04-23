@@ -92,9 +92,7 @@ impl cosmic::Application for BongoPenguin {
         tracing::info!(count, "loaded persisted count");
         let input_ok = input::has_input_permission();
         if !input_ok {
-            tracing::warn!(
-                "cannot read from /dev/input/event* — user likely not in `input` group"
-            );
+            tracing::warn!("cannot read from /dev/input/event* — user likely not in `input` group");
         }
         let tabs = segmented_button::Model::builder()
             .insert(|b| b.text("Cosmetics").data(Tab::Cosmetics).activate())
@@ -330,8 +328,8 @@ impl BongoPenguin {
         .size(12);
         let cmd = text("sudo usermod -aG input $USER").size(12);
         let hint = text("Then log out and log back in.").size(12);
-        let help =
-            button::link("Read the full instructions on GitHub").on_press(Message::OpenUrl(GITHUB_URL));
+        let help = button::link("Read the full instructions on GitHub")
+            .on_press(Message::OpenUrl(GITHUB_URL));
 
         column::with_children(vec![
             title.into(),
